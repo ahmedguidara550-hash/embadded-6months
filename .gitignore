@@ -1,0 +1,19 @@
+# compiled programs and objects
+*.out
+*.o
+*.elf
+*.map
+*.a
+build/
+ 
+# coverage and temporary files
+*.gcda
+*.gcno
+*.gcov
+*.info
+*.i
+*.s
+*.d
+ 
+# editor files
+.vscode/
