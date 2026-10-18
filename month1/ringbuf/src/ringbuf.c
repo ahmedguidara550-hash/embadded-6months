@@ -29,6 +29,7 @@ bool ringbuf_pop(ringbuf_t *rb,uint8_t *byte){
         return false;
     }
     *byte = rb ->storage[rb->tail];
+    /**byte = (uint8_t)(rb->storage[rb->tail] + 1U);  */  /*BUG: returns the wrong byte */
     rb->tail = (rb->tail + 1U) % rb->capacity;
     rb ->count--;
     return true;

@@ -6,22 +6,30 @@ BUILD := build
 
 LIB_SRC := src/ringbuf.c
 APP_SRC := app/main.c
+TEST_SRC := test/test_ringbuf.c test/unity/unity.c
 
 LIB_OBJ := $(LIB_SRC:%.c=$(BUILD)/%.o)
 APP_OBJ := $(APP_SRC:%.c=$(BUILD)/%.o)
-DEPS :=$(LIB_OBJ:.o=.d) $(APP_OBJ:.o=.d)
+TEST_OBJ := $(TEST_SRC:%.c=$(BUILD)/%.o)
+DEPS     := $(LIB_OBJ:.o=.d) $(APP_OBJ:.o=.d) $(TEST_OBJ:.o=.d)
 
 # ARM Cortex-M4 cross-compiler settings
 ARM_CC := arm-none-eabi-gcc
 ARM_CFLAGS :=-std=c11 -mcpu=cortex-m4 -mthumb -Os -Wall -Wextra -Wconversion -Werror
 
 #=======targets=========
-.PHONY: all size clean
+.PHONY: all test size arm firmware clean
 
 all: $(BUILD)/demo
 
 $(BUILD)/demo: $(APP_OBJ) $(LIB_OBJ)
 	$(CC) $^ -o $@
+
+$(BUILD)/test_ringbuf: $(TEST_OBJ) $(LIB_OBJ)
+	$(CC) $^ -o $@
+
+test : $(BUILD)/test_ringbuf
+	./$(BUILD)/test_ringbuf
 
 size: $(BUILD)/demo
 	size $(BUILD)/demo $(LIB_OBJ)
@@ -41,7 +49,7 @@ firmware:
 #one rule that builds ANY .o file from the .c file with the same name
 $(BUILD)/%.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -Itest/unity -MMD -MP -c $< -o $@
 
 clean:
 	rm -rf $(BUILD)
