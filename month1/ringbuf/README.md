@@ -42,4 +42,12 @@ Or with CMake:
   producer and single consumer scheme (to be studied later)
  
 ## Status
-Unit tests and coverage: coming later
+v1.0: 10 unit tests (Unity), 100% line / function / branch coverage,
+clean under -Wall -Wextra -Wconversion -Werror, cppcheck, clang-tidy and
+gcc -fanalyzer, and clean under AddressSanitizer + UBSan.
+ 
+## Test
+    make test        # run the unit tests
+    make coverage    # coverage report in build/cov/html/index.html
+    make analyze     # static analysis
+

@@ -18,7 +18,7 @@ typedef struct
     size_t count ; /*how many bytes are stored right now*/
 }ringbuf_t;
 /*prepare the ring buffer.Returns false if the buffer is invalid*/
-bool ringbuf_init(ringbuf_t *rb,uint8_t *storge,size_t capacity);
+bool ringbuf_init(ringbuf_t *rb,uint8_t *storage,size_t capacity);
 /*add one byte at the end.Returns false if the buffer is full*/
 bool ringbuf_push(ringbuf_t *rb,uint8_t byte);
 /*remove the oldest byte and store it in *byte.Returns false if empty*/
@@ -27,6 +27,7 @@ bool ringbuf_pop(ringbuf_t *rb, uint8_t *byte);
 bool ringbuf_is_empty(const ringbuf_t *rb);
 bool ringbuf_is_full(const ringbuf_t *rb);
 size_t ringbuf_count(const ringbuf_t *rb);
+size_t ringbuf_free_space(const ringbuf_t *rb);
 
 /*forget everything that is stored*/
 void ringbuf_clear(ringbuf_t *rb);

@@ -19,6 +19,7 @@ bool ringbuf_push(ringbuf_t *rb,uint8_t byte){
     }
     rb ->storage[rb ->head] = byte;
     rb ->head = (rb->head + 1U) % rb ->capacity ;
+    /*rb->head = rb->head + 1U; */
     rb ->count++;
     return true;
 }
@@ -29,6 +30,7 @@ bool ringbuf_pop(ringbuf_t *rb,uint8_t *byte){
         return false;
     }
     *byte = rb ->storage[rb->tail];
+    /**byte = (uint8_t)(rb->storage[rb->tail] + 1U);  */  /*BUG: returns the wrong byte */
     rb->tail = (rb->tail + 1U) % rb->capacity;
     rb ->count--;
     return true;
@@ -52,4 +54,10 @@ void ringbuf_clear(ringbuf_t *rb){
         rb->count = 0U;
     }
     
+}
+size_t ringbuf_free_space(const ringbuf_t *rb){
+    /*fake body to fail with make test
+    (void)rb;
+    return 0U; */
+    return (rb == NULL) ? 0U : (rb->capacity - rb->count);
 }
