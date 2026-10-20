@@ -108,6 +108,13 @@ void test_null_pointers_are_handled_safely(void)
     TEST_ASSERT_EQUAL_UINT32(0U, ringbuf_count(NULL));
     ringbuf_clear(NULL);  /* must simply not crash */
 }
+
+void test_free_space_is_capacity_minus_count(void){
+    TEST_ASSERT_EQUAL_UINT32(CAPACITY,ringbuf_free_space(&rb));
+    (void)ringbuf_push(&rb,1);
+    TEST_ASSERT_EQUAL_UINT32(CAPACITY - 1U , ringbuf_free_space(&rb));
+    TEST_ASSERT_EQUAL_UINT32(0U,ringbuf_free_space(NULL));
+}
  
 int main(void)
 {
@@ -121,5 +128,6 @@ int main(void)
     RUN_TEST(test_wrap_around_keeps_working);
     RUN_TEST(test_clear_empties_the_buffer);
     RUN_TEST(test_null_pointers_are_handled_safely);
+    RUN_TEST(test_free_space_is_capacity_minus_count);
     return UNITY_END();
 }
